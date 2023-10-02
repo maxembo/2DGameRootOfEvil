@@ -60,8 +60,6 @@ public class HealthProcessor : MonoBehaviour, IHealth, IUsable
         ChangeHealthBar();
 
         StartCoroutine(ChangeColor(GlobalConstants.HealColor));
-
-        CheckDeath();
     }
 
     public void ChangeHealthBar()
@@ -83,25 +81,12 @@ public class HealthProcessor : MonoBehaviour, IHealth, IUsable
 
     private void SetColor(Color color) => _spriteRenderer.color = color;
 
-    private bool CheckPlayer() => transform.CompareTag("Player");
-
     private bool CanHealing() => _currentHitPoints < _maxHitPoints;
 
     private void CheckDeath()
     {
-        if (_currentHitPoints <= 0)
-            if (CheckPlayer())
-            {
-                EventHandler.OnPlayerDeath?.Invoke();
-                
-                PlayerTransition.Transiting(transform, GlobalConstants.TavernInside);
-            }
-            else
-            {
-                EventHandler.OnEnemyKilled?.Invoke();
-
-                Destroy(gameObject);
-            }
+        if (_currentHitPoints <= 0 && transform.TryGetComponent(out Character character))
+            character.Death();
     }
 
     #region Not Implemented

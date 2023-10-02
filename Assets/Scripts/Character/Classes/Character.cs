@@ -4,6 +4,7 @@ using GlobalVariables;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
+    [SerializeField] private bool _isPlayer;
     [SerializeField][Range(0, 10)] private int _movementSpeed;
 
     public TransportableItem holdedItem;
@@ -47,6 +48,22 @@ public class Character : MonoBehaviour
     public void RotateByAngle(Transform obj, float angle)
     {
         ExecuteCommandByValue(new RotationCommand(obj), angle);
+    }
+
+    public void Death()
+    {
+        if (_isPlayer)
+        {
+            EventHandler.OnPlayerDeath?.Invoke();
+                
+            PlayerTransition.Transiting(transform, GlobalConstants.TavernInside);
+        }
+        else
+        {
+            EventHandler.OnEnemyKilled?.Invoke();
+
+            Destroy(gameObject);
+        }
     }
 
     #endregion
