@@ -55,8 +55,9 @@ namespace GlobalVariables
 
         #region Colors
 
-        public static Color HealColor = new Color(0.459f, 1.000f, 1.000f, 1.000f);
-        public static Color DamageColor = new Color(1.000f, 0.459f, 0.459f, 1.000f);
+        public static Color DefaultColor = new Color(1.000f, 1.000f, 1.000f, 1.000f);
+        public static Color HealColor = new Color(0.459f, 1.000f, 1.000f, 0.500f);
+        public static Color DamageColor = new Color(1.000f, 0.459f, 0.459f, 0.500f);
 
         #endregion
     }

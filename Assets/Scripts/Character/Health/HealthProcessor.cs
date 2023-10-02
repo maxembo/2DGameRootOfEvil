@@ -70,19 +70,15 @@ public class HealthProcessor : MonoBehaviour, IHealth, IUsable
         
         if (_healthBar != null)
             _healthBar.SetCurrentHealth(_currentHitPoints * 100 / _maxHitPoints);
-
-            // _healthBar.SetCurrentHealth(_currentHitPoints);
     }
     
     private IEnumerator ChangeColor(Color color)
     {
-        var oldColor = _spriteRenderer.color;
-
         SetColor(color);
 
         yield return new WaitForSeconds(GlobalConstants.TimeChangeColor);
 
-        SetColor(oldColor);
+        SetColor(GlobalConstants.DefaultColor);
     }
 
     private void SetColor(Color color) => _spriteRenderer.color = color;
