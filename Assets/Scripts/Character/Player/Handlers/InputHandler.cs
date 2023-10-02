@@ -1,17 +1,17 @@
+using System;
 using UnityEngine;
 using InputData;
-using UnityEngine.Serialization;
 
 public class InputHandler : MonoBehaviour
 {
     #region Vars
 
-    [FormerlySerializedAs("_playerAnim")]
-    [Header("Components:")] 
-    [SerializeField] private Animator _anim;
-    [SerializeField] private PlayerAudioHandler _audioHandler;
+    [SerializeField] private GameState _gameState;
 
-    private GameModes _gameMode;
+    [Header("Components:")] [SerializeField]
+    private Animator _anim;
+
+    [SerializeField] private PlayerAudioHandler _audioHandler;
 
     private Warrior _player;
     private TurnHandler _turnHandler;
@@ -24,18 +24,22 @@ public class InputHandler : MonoBehaviour
 
     #region Base Methods
 
+    private void OnValidate()
+    {
+        if (_gameState == null)
+            _gameState = FindObjectOfType<GameState>();
+    }
+
     private void Start()
     {
         _player = GetComponent<Warrior>();
         _turnHandler = GetComponent<TurnHandler>();
         _itemHandler = GetComponent<ItemHandler>();
-        
-        EventHandler.OnGameModeChanged.AddListener(ChangeGameMode);
     }
 
     private void Update()
     {
-        if (_gameMode != GameModes.Playing)
+        if (_gameState.CurrentState != GameStates.Playing)
             return;
 
         SetAxes();
@@ -52,7 +56,7 @@ public class InputHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_gameMode != GameModes.Playing)
+        if (_gameState.CurrentState != GameStates.Playing)
             return;
 
         if (IsPlayerMoving())
@@ -75,8 +79,6 @@ public class InputHandler : MonoBehaviour
 
     #region Other
 
-    private void ChangeGameMode(GameModes mode) => _gameMode = mode;
-    
     private bool IsPlayerMoving() => _verticalAxis != 0 || _horizontalAxis != 0;
 
     #endregion

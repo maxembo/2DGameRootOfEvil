@@ -4,11 +4,12 @@ using UnityEditor;
 using System;
 using System.IO;
 using EditorExtension;
+using UnityEngine.Serialization;
 
 public class Questor : MonoBehaviour
 {
-    [Header("Game Values Manager")] [SerializeField]
-    private GameValues _gameValues;
+    [FormerlySerializedAs("_gameValues")] [Header("Game Values Manager")] [SerializeField]
+    private GameState gameState;
 
     [Header("Questor")] public string questorName;
 
@@ -42,8 +43,8 @@ public class Questor : MonoBehaviour
 
     private void SetNullableFields()
     {
-        if (_gameValues == null)
-            _gameValues = FindObjectOfType<GameValues>();
+        if (gameState == null)
+            gameState = FindObjectOfType<GameState>();
 
         if (_spriteRenderer == null)
             _spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -54,7 +55,7 @@ public class Questor : MonoBehaviour
 
     public void Dialogue()
     {
-        if (_gameValues.GetGameMode() == GameModes.Pause) return;
+        if (gameState.CurrentState == GameStates.Paused) return;
 
         EventHandler.OnDialogueWindowShow?.Invoke(true);
         EventHandler.OnShowQuests?.Invoke
@@ -76,13 +77,13 @@ public class Questor : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (_gameValues.GetGameMode() == GameModes.Playing && collision.CompareTag("Player"))
+        if (gameState.CurrentState == GameStates.Playing && collision.CompareTag("Player"))
             _dialogueReady = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_gameValues.GetGameMode() == GameModes.Playing && collision.CompareTag("Player"))
+        if (gameState.CurrentState == GameStates.Playing && collision.CompareTag("Player"))
             _dialogueReady = false;
     }
 

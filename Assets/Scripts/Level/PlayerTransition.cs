@@ -2,12 +2,16 @@ using UnityEngine;
 
 public class PlayerTransition : MonoBehaviour
 {
+    [SerializeField] private GameState _gameState;
     [SerializeField] private Transform _placeTransition;
 
     private Transform _player;
-    private GameModes _gameMode;
-
-    private void Start() => EventHandler.OnGameModeChanged.AddListener(ChangeGameMode);
+    
+    private void OnValidate()
+    {
+        if (_gameState == null)
+            _gameState = FindObjectOfType<GameState>();
+    }
 
     private void Update()
     {
@@ -17,25 +21,17 @@ public class PlayerTransition : MonoBehaviour
 
     public static void Transiting(Transform obj, Vector2 place) => obj.transform.position = place;
 
-    private void ChangeGameMode(GameModes mode) => _gameMode = mode;
-
     #region Trigger
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (
-            _gameMode == GameModes.Playing &&
-            collision.transform.tag == "Player"
-            )
+        if (_gameState.CurrentState == GameStates.Playing && collision.transform.tag == "Player")
             _player = collision.transform;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (
-            _gameMode == GameModes.Playing &&
-            collision.transform.tag == "Player"
-            )
+        if (_gameState.CurrentState == GameStates.Playing && collision.transform.tag == "Player")
             _player = null;
     }
 

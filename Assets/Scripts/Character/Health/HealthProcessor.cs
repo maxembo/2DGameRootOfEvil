@@ -88,23 +88,4 @@ public class HealthProcessor : MonoBehaviour, IHealth, IUsable
         if (_currentHitPoints <= 0 && transform.TryGetComponent(out Character character))
             character.Death();
     }
-
-    #region Not Implemented
-
-    public void PrimaryAction()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void SecondaryAction()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void PassiveAction()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    #endregion
 }
