@@ -25,15 +25,18 @@ public class PlayerTransition : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (_gameState.CurrentState == GameStates.Playing && collision.transform.tag == "Player")
+        if (CheckConditions(collision.transform))
             _player = collision.transform;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_gameState.CurrentState == GameStates.Playing && collision.transform.tag == "Player")
+        if (CheckConditions(collision.transform))
             _player = null;
     }
 
+    private bool CheckConditions(Transform t) => 
+        _gameState.CurrentState == GameStates.Playing && t.CompareTag("Player");
+    
     #endregion
 }

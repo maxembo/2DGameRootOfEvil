@@ -91,8 +91,10 @@ public class QuestAction : MonoBehaviour, IUsable
 
     public void ResponseAction(GameObject g)
     {
-        if (g.TryGetComponent(out UsableItem item) && CompareItemsName(_responseItem, item)) ;
-        CompleteAction();
+        if (g.TryGetComponent(out UsableItem item) 
+            && _responseItem != null
+            && CompareItemsName(_responseItem, item))
+            CompleteAction();
     }
 
     private void CompleteAction()
@@ -114,14 +116,8 @@ public class QuestAction : MonoBehaviour, IUsable
         else _spriteRenderer.enabled = false;
     }
 
-    private bool CheckAndGetItem(GameObject g, out UsableItem item)
-    {
-        if (g.TryGetComponent(out item) && CompareItemsName(_questItem, item)) ;
-        return true;
-    }
-
     private bool CompareItemsName(UsableItem first, UsableItem second) =>
-        first.nameItem == second.nameItem || first == null || second == null;
+        first.nameItem == second.nameItem;
 
     private Vector2 GetRewardPos() => (Vector2)transform.position + _rewardPosition;
 
@@ -130,7 +126,7 @@ public class QuestAction : MonoBehaviour, IUsable
         if (!_passiveExecution)
             return;
 
-        if (CheckAndGetItem(collision.gameObject, out UsableItem item))
+        if (collision.TryGetComponent(out UsableItem item))
         {
             _quest.AddItem(item);
             CompleteAction();
@@ -142,7 +138,7 @@ public class QuestAction : MonoBehaviour, IUsable
         if (!_passiveExecution)
             return;
 
-        if (CheckAndGetItem(collision.gameObject, out UsableItem item))
+        if (collision.TryGetComponent(out UsableItem item))
         {
             _quest.RemoveItem(item);
             CompleteAction();

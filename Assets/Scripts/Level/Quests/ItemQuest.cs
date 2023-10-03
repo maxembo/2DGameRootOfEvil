@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/ItemQuest", order = 0)]
 public class ItemQuest : Quest
@@ -13,7 +13,7 @@ public class ItemQuest : Quest
     [Tooltip("Предмет, необходимый для выполнения квеста")]
     public UsableItem questItem;
 
-    [FormerlySerializedAs("questItems")] [Tooltip("Собранные квестовые предметы")]
+    [Tooltip("Собранные квестовые предметы")]
     public List<UsableItem> questItemsCollections;
 
     #endregion
@@ -36,16 +36,16 @@ public class ItemQuest : Quest
 
     public void AddItem(UsableItem item)
     {
-        if (!questItemsCollections.Contains(item))
+        if (!questItemsCollections.Contains(item) && item.nameItem == questItem.nameItem)
             questItemsCollections.Add(item);
     }
 
     public void RemoveItem(UsableItem item)
     {
-        if (questItemsCollections.Contains(item))
+        if (questItemsCollections.Contains(item) && item.nameItem == questItem.nameItem)
             questItemsCollections.Remove(item);
     }
-
+    
     private string NoDoneReplica()
     {
         if (questItem != null)
