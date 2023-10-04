@@ -14,8 +14,8 @@ public class Healer : UsableItem
 
         HealingCaster();
 
-        if (_iUsables != null)
-            foreach (var usable in _iUsables)
+        if (_responseItems != null)
+            foreach (var usable in _responseItems)
                 usable.ResponseAction(gameObject);
 
         if (_destroyAfterUsing)

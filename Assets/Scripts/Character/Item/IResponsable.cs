@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IUsable
+public interface IResponsable
 {
     public void ResponseAction(GameObject g);
 }

@@ -23,7 +23,7 @@ public class UsableItem : MonoBehaviour
 
     [SerializeField] protected bool _canUse = true;
 
-    protected List<IUsable> _iUsables = new();
+    protected List<IResponsable> _responseItems = new();
 
     public virtual void Update()
     {
@@ -35,7 +35,7 @@ public class UsableItem : MonoBehaviour
     {
         if (!enabled) return;
 
-        foreach (var usable in _iUsables)
+        foreach (var usable in _responseItems)
             usable.ResponseAction(gameObject);
 
         if (_disableComponent)
@@ -62,16 +62,16 @@ public class UsableItem : MonoBehaviour
 
     private void AddToList(Collider2D collision)
     {
-        if (!collision.TryGetComponent(out IUsable usable)) return;
-        if (!_iUsables.Contains(usable))
-            _iUsables.Add(usable);
+        if (!collision.TryGetComponent(out IResponsable usable)) return;
+        if (!_responseItems.Contains(usable))
+            _responseItems.Add(usable);
     }
 
     private void RemoveFromList(Collider2D collision)
     {
-        if (!collision.TryGetComponent(out IUsable usable)) return;
-        if (_iUsables.Contains(usable))
-            _iUsables.Remove(usable);
+        if (!collision.TryGetComponent(out IResponsable usable)) return;
+        if (_responseItems.Contains(usable))
+            _responseItems.Remove(usable);
     }
 
     private void OnTriggerStay2D(Collider2D collision) => AddToList(collision);

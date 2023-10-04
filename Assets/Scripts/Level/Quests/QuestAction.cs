@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class QuestAction : MonoBehaviour, IUsable
+public class QuestAction : MonoBehaviour, IResponsable
 {
     [Tooltip("Привязка к квесту (Оставьте пустым если нет)")] [SerializeField]
     private ItemQuest _quest;
@@ -16,12 +16,14 @@ public class QuestAction : MonoBehaviour, IUsable
 
     [Tooltip("Награда за действие (Оставьте пустым если нет)")] [SerializeField]
     private GameObject _reward;
+    
+    [Tooltip("Кол-во наград за действие (Оставьте пустым если нет)"), SerializeField, Min(0)]
+    private int _rewardCount;
 
     [Tooltip("Позиция спавна награды (Оставьте пустым если нет)")] [SerializeField]
     private Vector2 _rewardPosition;
 
-    [Tooltip("Нужна ли засчитывать квестовое действие (Оставьте пустым если нет)")]
-    [SerializeField]
+    [Tooltip("Нужна ли засчитывать квестовое действие (Оставьте пустым если нет)")] [SerializeField]
     private bool _reduceActions = true;
 
     [Tooltip("Отключен компонент до начала квеста.")] [SerializeField]
@@ -32,7 +34,7 @@ public class QuestAction : MonoBehaviour, IUsable
 
     [Tooltip("Выполняется при попадании в триггер")] [SerializeField]
     protected bool _passiveExecution;
-    
+
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _collider;
 
@@ -78,12 +80,8 @@ public class QuestAction : MonoBehaviour, IUsable
 
     public void CheckStartingQuest(Quest quest)
     {
-        if (quest == _quest && _quest.questItem.nameItem != null)
-        {
-            _responseItem = _quest.questItem;
-
+        if (quest == _quest)
             Initialize();
-        }
     }
 
     public void ResponseAction(GameObject g)
@@ -99,14 +97,23 @@ public class QuestAction : MonoBehaviour, IUsable
         if (_reduceActions)
             _quest.ReduceAction();
 
-        if (_reward != null)
-            Instantiate
-            (
-                _reward,
-                GetRewardPos(),
-                Quaternion.identity
-            );
+        GiveReward();
 
+        ChangeSprite();
+    }
+
+    private void GiveReward()
+    {
+        if (_reward != null && _rewardCount > 0)
+        {
+            Instantiate(_reward, GetRewardPos(), Quaternion.identity);
+
+            _rewardCount--;
+        }
+    }
+
+    private void ChangeSprite()
+    {
         if (_newSprite != null) _spriteRenderer.sprite = _newSprite;
         else _spriteRenderer.enabled = false;
     }
@@ -125,12 +132,12 @@ public class QuestAction : MonoBehaviour, IUsable
             CompleteAction();
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!_passiveExecution)
-            return;
-
-        if (collision.TryGetComponent(out UsableItem item))
-            CompleteAction();
-    }
+    // private void OnTriggerExit2D(Collider2D collision)
+    // {
+    //     if (!_passiveExecution)
+    //         return;
+    //
+    //     if (collision.TryGetComponent(out UsableItem item))
+    //         CompleteAction();
+    // }
 }

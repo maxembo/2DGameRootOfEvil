@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using GlobalVariables;
 
-public class HealthProcessor : MonoBehaviour, IHealth, IUsable
+public class HealthProcessor : MonoBehaviour, IHealth, IResponsable
 {
     [Header("Required Components")] [SerializeField]
     private SpriteRenderer _spriteRenderer;
