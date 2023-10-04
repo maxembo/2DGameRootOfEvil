@@ -5,10 +5,8 @@ public class DialogueQuest : Quest
 {
     #region Vars
 
-    [Header("Quest Replicas")]
-    public bool randomSequence = false;
-    [TextArea(2, 4)]
-    public string[] questReplicas;
+    [Header("Quest Replicas")] public bool randomSequence = false;
+    [TextArea(2, 4)] public string[] questReplicas;
 
     #endregion
 
@@ -32,10 +30,10 @@ public class DialogueQuest : Quest
         RemoveReplica(ref questReplicas, index);
     }
 
-    public override void NoDone() => ReduceAction();
+    public override void ProgressingQuest() => ReduceAction();
 
     public override bool SomeCondition() => questReplicas.Length <= 0;
-   
+
     #endregion
 
     #region Other Methods

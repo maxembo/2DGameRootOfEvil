@@ -5,13 +5,12 @@ public abstract class Quest : ScriptableObject
 {
     #region Vars
 
-    [Header("Quest")] 
-    public string questName;
+    [Header("Quest")] public string questName;
     public string description;
 
     [Tooltip("На случай, если квест имеет чисто диалоговый характер и необходимо, чтобы он не зачитывался")]
     public bool isCounted = true;
-    
+
     [NonSerialized] public Questor questor;
 
     [Header("Quest States")] public QuestStages stage;
@@ -30,9 +29,8 @@ public abstract class Quest : ScriptableObject
 
     [TextArea(2, 4)] public string[] noDoneReplicas;
     [TextArea(2, 4)] public string completeReplica;
-    
-    [Header("Requirements Quest Launch")] 
-    [Tooltip("Требуемый уровень зла в мире (выше указанного)")]
+
+    [Header("Requirements Quest Launch")] [Tooltip("Требуемый уровень зла в мире (выше указанного)")]
     public int minLevel;
 
     [Tooltip("Требуемый уровень зла в мире (ниже указанного)")]
@@ -64,7 +62,7 @@ public abstract class Quest : ScriptableObject
 
     [Tooltip("Делает доступными эти квесты, после завершения этого")]
     public Quest[] availableQuests_pass;
-    
+
     [Header("Complete action in another quest")]
     [Tooltip("Завершает одно квестовое действие у этих квестов, после завершения этого")]
     public ItemQuest[] _completingAction_itemQuests;
@@ -80,22 +78,28 @@ public abstract class Quest : ScriptableObject
 
     public void SetStage(QuestStages stage) => this.stage = stage;
 
-    public void CheckQuest()
+    public void CheckCondition()
+    {
+        if (SomeCondition()) CompleteQuest();
+        else ProgressingQuest();
+    }
+
+    public void CheckStage()
     {
         switch (stage)
         {
             case QuestStages.NotStarted:
                 StartQuest();
                 break;
-            case QuestStages.Progressing:
-                ProgressingQuest();
-                break;
             case QuestStages.Completed:
                 PassQuest();
                 break;
+            case QuestStages.Progressing:
+                CheckCondition();
+                break;
         }
     }
-
+    
     public void StartQuest()
     {
         MakeAvailableQuests(availableQuests_start);
@@ -108,17 +112,6 @@ public abstract class Quest : ScriptableObject
         EventHandler.OnDialogPassed.AddListener(PassingQuestAfterPass);
 
         SetStage(QuestStages.Progressing);
-    }
-
-    public void ProgressingQuest()
-    {
-        if (SomeCondition())
-        {
-            CompleteQuest();
-
-            PassQuest();
-        }
-        else NoDone();
     }
 
     public void CompleteQuest()
@@ -142,21 +135,22 @@ public abstract class Quest : ScriptableObject
         MakeAvailableQuests(availableQuests_pass);
 
         SetStage(QuestStages.Passed);
-        
+
         ReduceActionInOtherQuest();
     }
-    
+
     public void ReduceActionInOtherQuest()
     {
         if (_completingAction_itemQuests != null)
             foreach (var quest in _completingAction_itemQuests)
                 quest.ReduceAction();
     }
+
     public abstract void ReduceAction();
 
     public abstract bool SomeCondition();
-    
-    public abstract void NoDone();
+
+    public abstract void ProgressingQuest();
 
     #endregion
 
@@ -184,7 +178,7 @@ public abstract class Quest : ScriptableObject
     #region Other Methods
 
     public int GetRandomIndex(string[] arr) => UnityEngine.Random.Range(0, arr.Length);
-    
+
     private bool CheckRequiredQuests()
     {
         if (

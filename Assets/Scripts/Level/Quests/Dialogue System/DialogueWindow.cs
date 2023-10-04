@@ -12,7 +12,8 @@ public class DialogueWindow : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _dialogText;
     [SerializeField] private Button _questButton;
     [SerializeField] private Button _closeDialogButton;
-
+    [SerializeField] private bool _isShowed;
+    
     private void Start()
     {
         EventHandler.OnDialogueWindowShow.AddListener(WindowSetActive);
@@ -23,7 +24,8 @@ public class DialogueWindow : MonoBehaviour
     public void WindowSetActive(bool value)
     {
         _dialogPanel.SetActive(value);
-
+        _isShowed = value;        
+        
         if (value == false)
             CloseDialogWindow();
     } 
@@ -67,7 +69,7 @@ public class DialogueWindow : MonoBehaviour
 
     public void Say(Questor questor, string replica)
     {
-        if (this.questor != null && questor == this.questor)
+        if (this.questor != null && questor == this.questor && _isShowed)
         {
             var replicaText = Instantiate(_dialogText, _replicaContent.transform);
             replicaText.text = replica;

@@ -28,7 +28,7 @@ public class ItemQuest : Quest
 
     public override bool SomeCondition() => questItemsCollections.Count == questActions;
 
-    public override void NoDone() => EventHandler.OnReplicaSay?.Invoke(questor, NoDoneReplica());
+    public override void ProgressingQuest() => EventHandler.OnReplicaSay?.Invoke(questor, NoDoneReplica());
 
     #endregion
 

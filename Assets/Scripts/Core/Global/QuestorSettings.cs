@@ -4,9 +4,10 @@ using UnityEngine;
 public class QuestorSettings : MonoBehaviour
 {
 #if UNITY_EDITOR
-
+    
     [SerializeField] private Questor[] _questors;
-
+    [SerializeField] private bool _confirmDeletion;
+    
     [Button("Save Quests")]
     public void SaveButton()
     {
@@ -27,12 +28,17 @@ public class QuestorSettings : MonoBehaviour
         foreach (var questor in _questors)
             questor.LoadButton();
     }
-
+    
     [Button("Delete Quests")]
     public void DeleteButton()
     {
-        foreach (var questor in _questors)
-            questor.DeleteButton();
+        if (_confirmDeletion)
+        {
+            foreach (var questor in _questors)
+                questor.DeleteButton();
+
+            _confirmDeletion = false;
+        }
     }
 
 #endif

@@ -7,7 +7,7 @@ public class QuestButton : MonoBehaviour
     public void CheckStageQuest()
     {
         if (quest != null)
-            quest.CheckQuest();
+            quest.CheckStage();
     }
 
     public void CloseDialogWindow() => EventHandler.OnDialogueWindowShow?.Invoke(false);

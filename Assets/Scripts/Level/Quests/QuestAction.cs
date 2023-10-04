@@ -1,6 +1,5 @@
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class QuestAction : MonoBehaviour, IUsable
 {
@@ -21,7 +20,6 @@ public class QuestAction : MonoBehaviour, IUsable
     [Tooltip("Позиция спавна награды (Оставьте пустым если нет)")] [SerializeField]
     private Vector2 _rewardPosition;
 
-    [FormerlySerializedAs("_isCounted")]
     [Tooltip("Нужна ли засчитывать квестовое действие (Оставьте пустым если нет)")]
     [SerializeField]
     private bool _reduceActions = true;
@@ -34,8 +32,7 @@ public class QuestAction : MonoBehaviour, IUsable
 
     [Tooltip("Выполняется при попадании в триггер")] [SerializeField]
     protected bool _passiveExecution;
-
-    private UsableItem _questItem;
+    
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _collider;
 
@@ -83,7 +80,7 @@ public class QuestAction : MonoBehaviour, IUsable
     {
         if (quest == _quest && _quest.questItem.nameItem != null)
         {
-            _questItem = _quest.questItem;
+            _responseItem = _quest.questItem;
 
             Initialize();
         }
@@ -91,9 +88,7 @@ public class QuestAction : MonoBehaviour, IUsable
 
     public void ResponseAction(GameObject g)
     {
-        if (g.TryGetComponent(out UsableItem item) 
-            && _responseItem != null
-            && CompareItemsName(_responseItem, item))
+        if (g.TryGetComponent(out UsableItem item) && _responseItem != null && CompareItemsName(_responseItem, item))
             CompleteAction();
     }
 
@@ -127,10 +122,7 @@ public class QuestAction : MonoBehaviour, IUsable
             return;
 
         if (collision.TryGetComponent(out UsableItem item))
-        {
-            _quest.AddItem(item);
             CompleteAction();
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -139,9 +131,6 @@ public class QuestAction : MonoBehaviour, IUsable
             return;
 
         if (collision.TryGetComponent(out UsableItem item))
-        {
-            _quest.RemoveItem(item);
             CompleteAction();
-        }
     }
 }
