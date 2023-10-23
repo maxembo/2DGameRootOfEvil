@@ -1,3 +1,4 @@
+using Scripts.Character.Classes;
 using UnityEngine;
 
 public class ItemHandler : MonoBehaviour
@@ -9,7 +10,8 @@ public class ItemHandler : MonoBehaviour
     private TransportableItem _holdedItem;
     private int _itemSortingOrder;
 
-    public TransportableItem HoldedItem  => _holdedItem;
+    public bool IsHolded { get; private set; }
+    public TransportableItem HoldedItem => _holdedItem;
 
     // ReSharper disable Unity.PerformanceAnalysis
     public void PickUpItem()
@@ -19,11 +21,12 @@ public class ItemHandler : MonoBehaviour
             _selectedItem.PickUp(transform);
             _holdedItem = _selectedItem;
             _selectedItem = null;
+
             SetCharacterItem(_holdedItem);
 
-            var tempSprite = GetFirstChildRenderer(_holdedItem.transform);
-            _itemSortingOrder = tempSprite.sortingOrder;
-            tempSprite.sortingOrder = _playerSpriteRenderer.sortingOrder + 1;
+            SetSpriteSortOrder();
+
+            IsHolded = true;
         }
     }
 
@@ -32,16 +35,28 @@ public class ItemHandler : MonoBehaviour
     {
         if (_holdedItem != null)
         {
-            GetFirstChildRenderer(_holdedItem.transform).sortingOrder = _itemSortingOrder;
-            
+            GetSpriteRenderer(_holdedItem.transform).sortingOrder = _itemSortingOrder;
+
             _holdedItem.Put();
             _holdedItem = null;
-            
+
             SetCharacterItem(null);
+
+            IsHolded = false;
         }
     }
 
-    private SpriteRenderer GetFirstChildRenderer(Transform t) => t.GetChild(0).GetComponent<SpriteRenderer>();
+    private void SetSpriteSortOrder()
+    {
+        var tempSprite = GetSpriteRenderer(_holdedItem.transform);
+        
+        _itemSortingOrder = tempSprite.sortingOrder;
+        
+        tempSprite.sortingOrder = _playerSpriteRenderer.sortingOrder + 1;
+    }
+
+    private SpriteRenderer GetSpriteRenderer(Transform t) => t.GetChild(0).GetComponent<SpriteRenderer>();
+
     private void SetCharacterItem(TransportableItem item) => _character.holdedItem = item;
 
     private void OnTriggerEnter2D(Collider2D collision)

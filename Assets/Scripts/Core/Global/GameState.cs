@@ -1,52 +1,53 @@
-using System;
-using InputData;
 using UnityEngine;
 
-public class GameState : MonoBehaviour
+namespace Scripts.Core.Global
 {
-    public GameStates CurrentState { get; private set; }
-    public GameObject pausePanel;
-
-    public static GameState instance = null;
-
-    void Start()
+    public class GameState : MonoBehaviour
     {
-        if (instance == null) instance = this;
-        else if (instance == this) Destroy(gameObject);
-    }
+        public GameStates CurrentState { get; private set; }
+        public GameObject pausePanel;
 
-    private void Update()
-    {
-        if (InputFunctions.GetEscapeButton_Up())
-            ChangeMode();
-    }
+        public static GameState instance;
 
-    private void ChangeMode()
-    {
-        if (CurrentState == GameStates.Playing) Pause();
-        else Play();
-    }
+        void Start()
+        {
+            if (instance == null) instance = this;
+            else if (instance == this) Destroy(gameObject);
+        }
 
-    public void Pause()
-    {
-        pausePanel.SetActive(true);
-        EventHandler.OnDialogueWindowShow?.Invoke(false);
-        Time.timeScale = 0;
+        private void Update()
+        {
+            if (InputFunctions.GetEscapeButton_Up())
+                ChangeMode();
+        }
 
-        CurrentState = GameStates.Paused;
-    }
+        private void ChangeMode()
+        {
+            if (CurrentState == GameStates.Playing) Pause();
+            else Play();
+        }
 
-    public void Play()
-    {
-        pausePanel.SetActive(false);
-        Time.timeScale = 1;
+        public void Pause()
+        {
+            pausePanel.SetActive(true);
+            EventHandler.OnDialogueWindowShow2?.Invoke(false);
+            Time.timeScale = 0;
+
+            CurrentState = GameStates.Paused;
+        }
+
+        public void Play()
+        {
+            pausePanel.SetActive(false);
+            Time.timeScale = 1;
         
-        CurrentState = GameStates.Playing;
+            CurrentState = GameStates.Playing;
+        }
     }
-}
 
-public enum GameStates
-{
-    Playing,
-    Paused
+    public enum GameStates
+    {
+        Playing,
+        Paused
+    }
 }

@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class MoveCommand : Command
+namespace Scripts.Core.Common
 {
-    public MoveCommand(Rigidbody2D Actor, Vector2 MoveDirection)
+    public class MoveCommand : Command
     {
-        _actor = Actor;
-        _moveDirection = MoveDirection;
-    }
+        public MoveCommand(Rigidbody2D actor, Vector2 moveDirection)
+        {
+            _actor = actor;
+            _moveDirection = moveDirection;
+        }
 
-    private Rigidbody2D _actor;
-    private Vector2 _moveDirection;
+        private Rigidbody2D _actor;
+        private Vector2 _moveDirection;
 
-    public override void Execute()
-    {
-        _actor.velocity = _moveDirection;
+        public override void Execute()
+        {
+            _actor.velocity = _moveDirection;
+        }
     }
 }

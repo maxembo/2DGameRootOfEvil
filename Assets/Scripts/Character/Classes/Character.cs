@@ -1,78 +1,82 @@
+using Scripts.Core.Common;
+using Scripts.Core.Global;
 using UnityEngine;
-using GlobalVariables;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class Character : MonoBehaviour
+namespace Scripts.Character.Classes
 {
-    [SerializeField] private bool _isPlayer;
-    [SerializeField][Range(0, 10)] private int _movementSpeed;
-
-    public TransportableItem holdedItem;
-
-    private Rigidbody2D _rbody;
-
-    private void Awake() => _rbody = GetComponent<Rigidbody2D>();
-
-    #region Character
-
-    public virtual void UsePrimaryAction()
+    [RequireComponent(typeof(Rigidbody2D))]
+    public class Character : MonoBehaviour
     {
-        if (
-            holdedItem != null &&
-            holdedItem.TryGetComponent(out UsableItem usedItem)
-            )
-            usedItem.PrimaryAction();
-    }
+        [SerializeField] private bool _isPlayer;
+        [SerializeField][Range(0, 10)] private int _movementSpeed;
 
-    public void UseSecondaryAction()
-    {
-        if (
-            holdedItem != null &&
-            holdedItem.TryGetComponent(out UsableItem usedItem)
-            )
-            usedItem.SecondaryAction();
-    }
+        public TransportableItem holdedItem;
 
-    public void MoveTo(Vector2 movementDirection)
-    {
-        float speed = _movementSpeed * GlobalConstants.CoefMovementSpeed;
+        private Rigidbody2D _rbody;
 
-        ExecuteCommand(new MoveCommand(_rbody, movementDirection * speed));
-    }
+        private void Awake() => _rbody = GetComponent<Rigidbody2D>();
 
-    public void StopMove()
-    {
-        ExecuteCommand(new MoveCommand(_rbody, Vector2.zero * 0));
-    }
+        #region Character
 
-    public void RotateByAngle(Transform obj, float angle)
-    {
-        ExecuteCommandByValue(new RotationCommand(obj), angle);
-    }
-
-    public void Death()
-    {
-        if (_isPlayer)
+        public virtual void UsePrimaryAction()
         {
-            EventHandler.OnPlayerDeath?.Invoke();
+            if (
+                    holdedItem != null &&
+                    holdedItem.TryGetComponent(out UsableItem usedItem)
+            )
+                usedItem.PrimaryAction();
+        }
+
+        public void UseSecondaryAction()
+        {
+            if (
+                    holdedItem != null &&
+                    holdedItem.TryGetComponent(out UsableItem usedItem)
+            )
+                usedItem.SecondaryAction();
+        }
+
+        public void MoveTo(Vector2 movementDirection)
+        {
+            float speed = _movementSpeed * GlobalConstants.CoefMovementSpeed;
+
+            ExecuteCommand(new MoveCommand(_rbody, movementDirection * speed));
+        }
+
+        public void StopMove()
+        {
+            ExecuteCommand(new MoveCommand(_rbody, Vector2.zero * 0));
+        }
+
+        public void RotateByAngle(Transform obj, float angle)
+        {
+            ExecuteCommandByValue(new RotationCommand(obj), angle);
+        }
+
+        public void Death()
+        {
+            if (_isPlayer)
+            {
+                EventHandler.OnPlayerDeath?.Invoke();
                 
-            PlayerTransition.Transiting(transform, GlobalConstants.TavernInside);
-        }
-        else
-        {
-            EventHandler.OnEnemyKilled?.Invoke();
+                PlayerTransition.Transiting(transform, GlobalConstants.TavernInside);
+            }
+            else
+            {
+                EventHandler.OnEnemyKilled?.Invoke();
 
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
         }
+
+        #endregion
+
+        #region Common
+
+        private void ExecuteCommand(Command command) => command.Execute();
+
+        private void ExecuteCommandByValue(Command command, float value) => command.ExecuteByValue(value);
+
+        #endregion
     }
-
-    #endregion
-
-    #region Common
-
-    private void ExecuteCommand(Command command) => command.Execute();
-
-    private void ExecuteCommandByValue(Command command, float value) => command.ExecuteByValue(value);
-
-    #endregion
 }

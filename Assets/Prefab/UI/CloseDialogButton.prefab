@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4849820922354088216}
   - component: {fileID: 8218044511586822268}
   - component: {fileID: 483334089135696124}
-  - component: {fileID: 181879591819987554}
+  - component: {fileID: 8721936847177967826}
   m_Layer: 0
   m_Name: CloseDialogButton
   m_TagString: Untagged
@@ -34,7 +34,6 @@ RectTransform:
   m_Children:
   - {fileID: 5277836962995594846}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -123,8 +122,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 181879591819987554}
-        m_TargetAssemblyTypeName: QuestButton, Assembly-CSharp
+      - m_Target: {fileID: 8721936847177967826}
+        m_TargetAssemblyTypeName: Level.QuestsV2.TalkButton, Assembly-CSharp
         m_MethodName: CloseDialogWindow
         m_Mode: 1
         m_Arguments:
@@ -135,7 +134,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &181879591819987554
+--- !u!114 &8721936847177967826
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,10 +143,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 524734362240881516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed3b9d82dceb74a4db4c69c658f66c46, type: 3}
+  m_Script: {fileID: 11500000, guid: b091022486d241dbbdc4140709d8093d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quest: {fileID: 0}
+  conversation: {fileID: 0}
 --- !u!1 &4748519271894573846
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +178,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8664893896093357329}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

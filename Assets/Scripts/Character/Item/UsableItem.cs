@@ -21,14 +21,12 @@ public class UsableItem : MonoBehaviour
     [Tooltip("Удаление компонента у предмета, после использования")] [SerializeField]
     protected bool _disableComponent;
 
-    [SerializeField] protected bool _canUse = true;
-
+    protected bool _canUse = true;
     protected List<IResponsable> _responseItems = new();
 
     public virtual void Update()
     {
-        if (_continuousExecution)
-            PassiveAction();
+        if (_continuousExecution) PassiveAction();
     }
 
     public virtual void PrimaryAction()
@@ -49,8 +47,7 @@ public class UsableItem : MonoBehaviour
 
     public void PassiveAction()
     {
-        if (_passiveExecution)
-            PrimaryAction();
+        if (_passiveExecution) PrimaryAction();
     }
 
     protected IEnumerator CanUse()

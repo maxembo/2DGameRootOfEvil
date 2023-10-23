@@ -1,4 +1,5 @@
-using GlobalVariables;
+using Scripts.Character.Classes;
+using Scripts.Core.Global;
 using UnityEngine;
 
 public class TurnHandler : MonoBehaviour

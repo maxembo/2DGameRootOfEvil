@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace GlobalVariables
+namespace Scripts.Core.Global
 {
-    public class GlobalConstants
+    public static class GlobalConstants
     {
         #region String Constants
 

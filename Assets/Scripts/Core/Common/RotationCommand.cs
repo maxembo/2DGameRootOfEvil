@@ -1,21 +1,24 @@
 using UnityEngine;
 
-public class RotationCommand : Command
+namespace Scripts.Core.Common
 {
-    public RotationCommand(Transform RotatableObj)
+    public class RotationCommand : Command
     {
-        _rotatableObj = RotatableObj;
-    }
+        public RotationCommand(Transform rotatableObj)
+        {
+            _rotatableObj = rotatableObj;
+        }
 
-    private Transform _rotatableObj;
+        private Transform _rotatableObj;
 
-    public override void Execute()
-    {
+        public override void Execute()
+        {
 
-    }
+        }
 
-    public override void ExecuteByValue(float angle)
-    {
-        _rotatableObj.localRotation = Quaternion.Euler(0f, angle, 0f);
+        public override void ExecuteByValue(float angle)
+        {
+            _rotatableObj.localRotation = Quaternion.Euler(0f, angle, 0f);
+        }
     }
 }

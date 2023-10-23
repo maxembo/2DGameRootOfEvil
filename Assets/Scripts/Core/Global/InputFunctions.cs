@@ -1,9 +1,8 @@
 using UnityEngine;
-using GlobalVariables;
 
-namespace InputData
+namespace Scripts.Core.Global
 {
-    public class InputFunctions
+    public static class InputFunctions
     {
         static public float GetVerticalAxis()
         {

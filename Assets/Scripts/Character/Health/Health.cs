@@ -1,4 +1,4 @@
-using GlobalVariables;
+using Scripts.Core.Global;
 
 public class Health : IHealth
 {

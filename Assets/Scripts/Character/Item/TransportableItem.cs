@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class TransportableItem : MonoBehaviour
 {
-    [SerializeField] private bool _isNotTaken = true;
+    private bool _isNotTaken = true;
 
     public bool IsNotTaken
     {
-        get { return _isNotTaken; }
-        set { _isNotTaken = value; }
+        get => _isNotTaken;
+        set => _isNotTaken = value;
     }
 
     public void PickUp(Transform parent)

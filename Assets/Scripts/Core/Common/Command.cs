@@ -1,6 +1,9 @@
-public abstract class Command
+namespace Scripts.Core.Common
 {
-    public abstract void Execute();
+    public abstract class Command
+    {
+        public abstract void Execute();
 
-    public virtual void ExecuteByValue(float value) { }
+        public virtual void ExecuteByValue(float value) { }
+    }
 }

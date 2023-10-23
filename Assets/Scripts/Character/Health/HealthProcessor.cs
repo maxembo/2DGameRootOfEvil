@@ -1,7 +1,8 @@
 using Core.Health;
 using System.Collections;
+using Scripts.Character.Classes;
+using Scripts.Core.Global;
 using UnityEngine;
-using GlobalVariables;
 
 public class HealthProcessor : MonoBehaviour, IHealth, IResponsable
 {

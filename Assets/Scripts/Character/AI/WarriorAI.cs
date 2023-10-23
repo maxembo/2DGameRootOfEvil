@@ -1,3 +1,4 @@
+using Scripts.Character.Classes;
 using UnityEngine;
 
 [RequireComponent(typeof(Warrior))]
