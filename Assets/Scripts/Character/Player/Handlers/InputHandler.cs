@@ -40,8 +40,7 @@ namespace Scripts.Character.Player.Handlers
 
         private void Update()
         {
-            if (_gameState.CurrentState != GameStates.Playing)
-                return;
+            if (_gameState.CurrentState != GameStates.Playing) return;
 
             SetAxes();
 
@@ -63,15 +62,12 @@ namespace Scripts.Character.Player.Handlers
             if (IsPlayerMoving())
             {
                 _player.MoveTo(GetMovementVector());
-
-                PlayerSideChanger();
-
+                CheckPlayerSide();
                 _audioHandler.TakeStep();
             }
             else
             {
                 _player.StopMove();
-
                 _audioHandler.StopPlaying();
             }
         }
@@ -88,7 +84,7 @@ namespace Scripts.Character.Player.Handlers
 
         private TurnHandler.playerSides GetLastPlayerSide() => _turnHandler.currentSide;
 
-        private void PlayerSideChanger()
+        private void CheckPlayerSide()
         {
             if (_verticalAxis < 0)
                 SetPlayerSide(TurnHandler.playerSides.Front);
@@ -142,7 +138,7 @@ namespace Scripts.Character.Player.Handlers
             if (InputFunctions.GetLMB_Up())
                 _player.UsePrimaryAction();
         }
-
+        
         private void UseItem_Secondary()
         {
             if (InputFunctions.GetRMB_Up())

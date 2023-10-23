@@ -4,10 +4,10 @@ using UnityEngine.Events;
 
 public static class EventHandler
 {
-    public static UnityEvent OnPlayerDeath = new UnityEvent();
-    public static UnityEvent OnEnemyKilled = new UnityEvent();
-    public static UnityEvent<int> OnEvilLevelChange = new UnityEvent<int>();
-    
+    public static UnityEvent OnPlayerDeath = new();
+    public static UnityEvent OnEnemyKilled = new();
+    public static UnityEvent<int> OnEvilLevelChange = new();
+
     #region Quest and Dialog Events
 
     public static UnityEvent<Conversation[], Questor, int> OnShowDialogs = new();

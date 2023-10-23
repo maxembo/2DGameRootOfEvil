@@ -49,9 +49,9 @@ public class ItemHandler : MonoBehaviour
     private void SetSpriteSortOrder()
     {
         var tempSprite = GetSpriteRenderer(_holdedItem.transform);
-        
+
         _itemSortingOrder = tempSprite.sortingOrder;
-        
+
         tempSprite.sortingOrder = _playerSpriteRenderer.sortingOrder + 1;
     }
 
@@ -59,15 +59,28 @@ public class ItemHandler : MonoBehaviour
 
     private void SetCharacterItem(TransportableItem item) => _character.holdedItem = item;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void SelectItem(TransportableItem item)
     {
-        if (collision.TryGetComponent(out TransportableItem item))
-            _selectedItem = item;
+        if (IsNewItem(item)) _selectedItem = item;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void DeselectItem(TransportableItem item)
     {
-        if (collision.TryGetComponent(out TransportableItem item) && item == _selectedItem)
+        if (!IsNewItem(item))
             _selectedItem = null;
     }
+
+    private bool IsNewItem(TransportableItem item) => _selectedItem != item;
+
+    // private void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     if (collision.TryGetComponent(out TransportableItem item))
+    //         _selectedItem = item;
+    // }
+    //
+    // private void OnTriggerExit2D(Collider2D collision)
+    // {
+    //     if (collision.TryGetComponent(out TransportableItem item) && item == _selectedItem)
+    //         _selectedItem = null;
+    // }
 }
